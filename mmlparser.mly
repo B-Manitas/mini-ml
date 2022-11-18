@@ -12,15 +12,14 @@
 (* Constante booléenne *)
 %token <bool> BOOL
 
-(* Symbole ??? *)
+(* Symbole des noms des variables *)
 %token <string> IDENT
 
 (* Symboles arithmétiques *)
-%token PLUS STAR UNIT NEG PARENTHESIS_LEFT PARENTHESIS_RIGHT
+%token PLUS MINUS STAR PAR_L PAR_R
 
 (* Symboles variables *)
-%token LET IN THEN ELSE
-
+%token LET IN THEN ELSE EQUAL
 
 (* Autres symboles *)
 %token NOT
@@ -29,8 +28,11 @@
 %token EOF
 
 (* Sens de l'association *)
-%left PLUS
-%left STAR
+// %left EQUAL (* Faible prioritée *)
+%left PLUS MINUS
+%left STAR 
+%left PAR_L PAR_R CST INDENT (* Forte prioritée *)
+
 
 (* Début du programme *)
 %start program
@@ -39,42 +41,38 @@
 %%
 
 program:
-| (* à compléter *) code=expression EOF { {types=[]; code} }
-// | error 
-//   {
-//     let pos = $startpos in
-//     let message = Printf.printf 
-//       "echec a la position %d %d"
-//       pos.pos_lnum
-//       (pos.pos_cnum - pos.pos_bol)
-//     in
-//     failwith message
-//    }
+| code=expression EOF 
+  { 
+    Printf.printf "OK";
+    { types=[]; code } 
+  }
 ;
 
 simple_expression:
 | n=CST { Int(n) }
-| PARENTHESIS_LEFT e=expr PARENTHESIS_RIGHT { e }
+| PAR_L e=expression PAR_R { e }
 | b=BOOL { Bool(b) }
-| _=UNIT {}
 ;
 
 expression:
 | e=simple_expression { e }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
 | e=expression op=unop { Uop(op, e) }
-| Let e1=expression IN e2=expression { (* A COMPLETER *) }
-| Let e1=expression THEN e2=expression { (* A COMPLETER *) }
-| Let e1=expression THEN e2=expression ELSE e3=expression { (* A COMPLETER *) }
+(*| LET e1=expression IN e2=expression { (* A COMPLETER *) }*)
+(*| LET e1=expression THEN e2=expression { (* A COMPLETER *) }*)
+(*| LET e1=expression THEN e2=expression ELSE e3=expression { (* A COMPLETER *) }*)
 ;
 
 %inline binop:
+| EQUAL { Eq }
 | PLUS { Add }
 | STAR { Mul }
+| MINUS { Sub }
 ;
 
 
+
 %inline unop:
-| NEG { Neg }
+| MINUS { Neg }
 | NOT { Not }
 ;

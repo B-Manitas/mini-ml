@@ -7,23 +7,25 @@
 
   let keyword_or_ident =
     let h = Hashtbl.create 17 in
-    List.iter (fun (s, k) -> Hashtbl.add h s k)
-      [ "true": TRUE,
-        "false": FALSE,
-        "fun": FUN,
-        "let": LET,
-        "rec": REC,
-        "in": IN,
-        "if": IF,
-        "then": THEN,
-        "else": ELSE,
-        "mod": MOD,
-        "not": NOT,
-        "type": TYPE,
-        "int": INT,
-        "bool": BOOL,
-        "unit": UNIT,
-        "mutable": MUTABLE
+    List.iter 
+			(fun (s, k) -> Hashtbl.add h s k)
+      [ 
+				(* "true", TRUE;
+        "false", FALSE;
+        "fun", FUN;
+        "let", LET;
+        "rec", REC;
+        "in", IN;
+        "if", IF;
+        "then", THEN;
+        "else", ELSE;
+        "mod", MOD;
+        "not", NOT;
+        "type", TYPE;
+        "int", INT;
+        "bool", BOOL;
+        "unit", UNIT;
+        "mutable", MUTABLE; *)
       ] ;
     fun s ->
       try  Hashtbl.find h s
@@ -49,13 +51,13 @@ rule token = parse
       { PLUS }
   | "*"
       { STAR }
-  | "=" 
-      { EQUAL }
-  | "==" 
-      { EQUAL_DB }
-  | "!=" 
-      { NEQ }
-  | "<" 
+  (* | "=" 
+      { EQUAL } *)
+  (* | "==" 
+      { EQUAL_DB } *)
+  (* | "!=" 
+      { NEQ } *)
+  (* | "<" 
       { LT }
   | "<=" 
       { LE }
@@ -66,12 +68,12 @@ rule token = parse
   | "&&" 
       { AND }
   | "||" 
-      { OR }
+      { OR } *)
   | "(" 
       { PAR_L }
   | ")" 
       { PAR_R }
-  | "{" 
+  (* | "{" 
       { BRACKET_L }
   | "}" 
       { BRACKET_R }
@@ -86,13 +88,13 @@ rule token = parse
   | "->" 
       { ARROW_R }
   | "()" 
-      { PAR  }
+      { PAR  } *)
   | "-" 
     { MINUS }
-  | _
-      { raise (Lexing_error ("unknown character : " ^ (lexeme lexbuf))) }
   | eof
       { EOF }
+  | _
+      { raise (Lexing_error ("unknown character : " ^ (lexeme lexbuf))) }
 
 and comment = parse
   | "*)"
