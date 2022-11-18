@@ -52,29 +52,29 @@ rule token = parse
   | "=" 
       { EQUAL }
   | "==" 
-      { DOUBLE_EQUAL }
+      { EQUAL_DB }
   | "!=" 
-      { DIFFERENT }
+      { NEQ }
   | "<" 
-      { LESS }
+      { LT }
   | "<=" 
-      { LESS_EQUAL }
+      { LE }
   | ">" 
-      { GREATER }
+      { GT }
   | ">=" 
-      { GREATER_EQUAL }
+      { GE }
   | "&&" 
       { AND }
   | "||" 
       { OR }
   | "(" 
-      { PARENTHESIS_LEFT }
+      { PAR_L }
   | ")" 
-      { PARENTHESIS_RIGHT }
+      { PAR_R }
   | "{" 
-      { BRACKET_LEFT }
+      { BRACKET_L }
   | "}" 
-      { BRACKET_RIGHT }
+      { BRACKET_R }
   | ";" 
       { SEMICOLON }
   | ":" 
@@ -82,13 +82,13 @@ rule token = parse
   | "." 
       { POINT }
   | "<-" 
-      { LEFT_ARROW }
+      { ARROW_L }
   | "->" 
-      { RIGHT_ARROW }
+      { ARROW_R }
   | "()" 
-      { PARENTHESIS  }
+      { PAR  }
   | "-" 
-    { NEG }
+    { MINUS }
   | _
       { raise (Lexing_error ("unknown character : " ^ (lexeme lexbuf))) }
   | eof
