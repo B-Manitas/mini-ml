@@ -10,12 +10,12 @@
     List.iter 
 			(fun (s, k) -> Hashtbl.add h s k)
       [ 
-				(* "true", TRUE;
+        "let", LET;
+        "in", IN;
+        (* "true", TRUE;
         "false", FALSE;
         "fun", FUN;
-        "let", LET;
         "rec", REC;
-        "in", IN;
         "if", IF;
         "then", THEN;
         "else", ELSE;
@@ -47,6 +47,8 @@ rule token = parse
       { comment lexbuf; token lexbuf }
   | number as n
       { CST(int_of_string n) }
+  | ident as id 
+    {keyword_or_ident id } 
   | "+"
       { PLUS }
   | "-" 
@@ -77,6 +79,8 @@ rule token = parse
       { PAR_L }
   | ")" 
       { PAR_R }
+  | "()" 
+      { UNIT } 
   (* | "{" 
       { BRACKET_L }
   | "}" 
@@ -90,10 +94,7 @@ rule token = parse
   | "<-" 
       { ARROW_L }
   | "->" 
-      { ARROW_R }
-  | "()" 
-      { PAR  } *)
-
+      { ARROW_R } *)
   | eof
       { EOF }
   | _

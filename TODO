@@ -5,8 +5,8 @@ Arithmétique (Opérateurs: plus, moins, div, mul)
 ✔ Intrepreteur @done(22-11-19 15:52)
 
 Variables
-☐ Lexer
-☐ Parser
+✔ Lexer @done(22-11-19 16:38)
+✔ Parser @done(22-11-19 16:38)
 ☐ Type Checker
 ☐ Intrepreteur
 
@@ -28,5 +28,6 @@ Récursion
 ☐ Type Checker
 ☐ Intrepreteur
 
-Autres
+A Verifier
 ☐ Controller division par zéro
+☐ mmlcat renvoie une erreur pour div
