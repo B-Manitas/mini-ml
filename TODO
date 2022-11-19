@@ -1,0 +1,32 @@
+Arithmétique (Opérateurs: plus, moins, div, mul)
+✔ Lexer @done(22-11-19 15:47)
+✔ Parser @done(22-11-19 15:51)
+✔ Type Checker @done(22-11-19 15:52)
+✔ Intrepreteur @done(22-11-19 15:52)
+
+Variables
+☐ Lexer
+☐ Parser
+☐ Type Checker
+☐ Intrepreteur
+
+Fonctions
+☐ Lexer
+☐ Parser
+☐ Type Checker
+☐ Intrepreteur
+
+Structures
+☐ Lexer
+☐ Parser
+☐ Type Checker
+☐ Intrepreteur
+
+Récursion
+☐ Lexer
+☐ Parser
+☐ Type Checker
+☐ Intrepreteur
+
+Autres
+☐ Controller division par zéro
