@@ -23,7 +23,7 @@ let type_prog prog =
   (* Calcule le type de l'expression [e] *)
   and type_expr e tenv = match e with
     | Int _  -> TInt
-    | Bop((Add | Mul), e1, e2) -> 
+    | Bop((Add | Mul | Sub | Div), e1, e2) -> 
        check e1 TInt tenv; check e2 TInt tenv; TInt
 
   in

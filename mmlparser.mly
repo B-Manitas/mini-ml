@@ -16,7 +16,7 @@
 %token <string> IDENT
 
 (* Symboles arithmétiques *)
-%token PLUS MINUS STAR PAR_L PAR_R
+%token PLUS MINUS STAR DIV PAR_L PAR_R
 
 (* Symboles variables *)
 %token LET IN THEN ELSE EQUAL
@@ -28,9 +28,9 @@
 %token EOF
 
 (* Sens de l'association *)
-// %left EQUAL (* Faible prioritée *)
+%left EQUAL (* Faible prioritée *)
 %left PLUS MINUS
-%left STAR 
+%left STAR DIV
 %left PAR_L PAR_R CST INDENT (* Forte prioritée *)
 
 
@@ -43,7 +43,6 @@
 program:
 | code=expression EOF 
   { 
-    Printf.printf "OK";
     { types=[]; code } 
   }
 ;
@@ -64,13 +63,12 @@ expression:
 ;
 
 %inline binop:
-| EQUAL { Eq }
 | PLUS { Add }
-| STAR { Mul }
 | MINUS { Sub }
+| STAR { Mul }
+| DIV { Div }
+| EQUAL { Eq }
 ;
-
-
 
 %inline unop:
 | MINUS { Neg }

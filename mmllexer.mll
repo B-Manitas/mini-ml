@@ -25,7 +25,7 @@
         "int", INT;
         "bool", BOOL;
         "unit", UNIT;
-        "mutable", MUTABLE; *)
+        "mutable", MUTABLE; *)  
       ] ;
     fun s ->
       try  Hashtbl.find h s
@@ -49,10 +49,14 @@ rule token = parse
       { CST(int_of_string n) }
   | "+"
       { PLUS }
+  | "-" 
+    { MINUS }
   | "*"
       { STAR }
-  (* | "=" 
-      { EQUAL } *)
+  | "/"
+    { DIV }
+  | "=" 
+      { EQUAL }
   (* | "==" 
       { EQUAL_DB } *)
   (* | "!=" 
@@ -89,8 +93,7 @@ rule token = parse
       { ARROW_R }
   | "()" 
       { PAR  } *)
-  | "-" 
-    { MINUS }
+
   | eof
       { EOF }
   | _
