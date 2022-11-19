@@ -19,7 +19,13 @@
 %token PLUS MINUS STAR DIV PAR_L PAR_R
 
 (* Symboles variables *)
-%token LET IN THEN ELSE EQUAL UNIT
+%token LET IN EQUAL
+
+(* Symboles fonctions *)
+%token IF THEN ELSE 
+
+(* Operation booléennes *)
+%token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR
 
 (* Autres symboles *)
 %token NOT
@@ -48,10 +54,12 @@ program:
 ;
 
 simple_expression:
-| UNIT { Unit }
+| PAR_L PAR_R { Unit }
 | n=CST { Int(n) }
 | x=IDENT { Var(x) }
 | PAR_L e=expression PAR_R { e }
+| b=TRUE { Bool(true) }
+| b=FALSE { Bool(false) }
 ;
 
 expression:
@@ -59,8 +67,8 @@ expression:
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
 | e=expression op=unop { Uop(op, e) }
 | LET ident=IDENT EQUAL e1=expression IN e2=expression { Let(ident, e1, e2) }
-(*| LET e1=expression THEN e2=expression { (* A COMPLETER *) }*)
-(*| LET e1=expression THEN e2=expression ELSE e3=expression { (* A COMPLETER *) }*)
+| IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
+| IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
 ;
 
 %inline binop:
@@ -69,6 +77,8 @@ expression:
 | STAR { Mul }
 | DIV { Div }
 | EQUAL { Eq }
+| AND { And }
+| OR { Or }
 ;
 
 %inline unop:

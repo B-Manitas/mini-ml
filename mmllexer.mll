@@ -12,20 +12,20 @@
       [ 
         "let", LET;
         "in", IN;
-        (* "true", TRUE;
-        "false", FALSE;
-        "fun", FUN;
-        "rec", REC;
         "if", IF;
         "then", THEN;
         "else", ELSE;
-        "mod", MOD;
-        "not", NOT;
-        "type", TYPE;
-        "int", INT;
-        "bool", BOOL;
-        "unit", UNIT;
-        "mutable", MUTABLE; *)  
+        "true", TRUE;
+        "false", FALSE;
+        (* "bool", BOOLEAN; *)
+        (* "fun", FUN; *)
+        (* "rec", REC; *)
+        (* "mod", MOD; *)
+        (* "not", NOT; *)
+        (* "type", TYPE; *)
+        (* "int", INTEGER; *)
+        (* "unit", UNIT; *)
+        (* "mutable", MUTABLE;   *)
       ] ;
     fun s ->
       try  Hashtbl.find h s
@@ -59,11 +59,11 @@ rule token = parse
     { DIV }
   | "=" 
       { EQUAL }
-  (* | "==" 
-      { EQUAL_DB } *)
-  (* | "!=" 
-      { NEQ } *)
-  (* | "<" 
+  | "==" 
+      { DEQUAL }
+  | "!=" 
+      { NEQ }
+  | "<" 
       { LT }
   | "<=" 
       { LE }
@@ -74,13 +74,11 @@ rule token = parse
   | "&&" 
       { AND }
   | "||" 
-      { OR } *)
+      { OR }
   | "(" 
       { PAR_L }
   | ")" 
       { PAR_R }
-  | "()" 
-      { UNIT } 
   (* | "{" 
       { BRACKET_L }
   | "}" 
