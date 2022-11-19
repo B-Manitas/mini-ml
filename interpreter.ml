@@ -46,6 +46,9 @@ let eval_prog (p: prog): value =
     | Bop(Div, e1, e2) -> VInt (evali e1 env / evali e2 env)
     | Bop(And, e1, e2) -> VBool (evalb e1 env && evalb e2 env)
     | Bop(Or, e1, e2) -> VBool (evalb e1 env || evalb e2 env)
+    | Bop(Lt, e1, e2) -> VBool (evali e1 env < evali e2 env)
+    | Bop(Le, e1, e2) -> VBool (evali e1 env <= evali e2 env)
+    | Uop(Not, e) -> VBool (not (evalb e env))
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 

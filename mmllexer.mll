@@ -17,11 +17,11 @@
         "else", ELSE;
         "true", TRUE;
         "false", FALSE;
+        "not", NOT;
         (* "bool", BOOLEAN; *)
         (* "fun", FUN; *)
         (* "rec", REC; *)
         (* "mod", MOD; *)
-        (* "not", NOT; *)
         (* "type", TYPE; *)
         (* "int", INTEGER; *)
         (* "unit", UNIT; *)

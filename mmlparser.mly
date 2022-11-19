@@ -25,10 +25,7 @@
 %token IF THEN ELSE 
 
 (* Operation booléennes *)
-%token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR
-
-(* Autres symboles *)
-%token NOT
+%token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR NOT
 
 (* Fin de fichier *)
 %token EOF
@@ -64,8 +61,9 @@ simple_expression:
 
 expression:
 | e=simple_expression { e }
+| op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
-| e=expression op=unop { Uop(op, e) }
+| e1=expression op=invop e2=expression { Bop(op, e2, e1) }
 | LET ident=IDENT EQUAL e1=expression IN e2=expression { Let(ident, e1, e2) }
 | IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
@@ -79,6 +77,13 @@ expression:
 | EQUAL { Eq }
 | AND { And }
 | OR { Or }
+| LT { Lt }
+| LE { Le }
+;
+
+%inline invop:
+| GT { Lt }
+| GE { Le }
 ;
 
 %inline unop:
