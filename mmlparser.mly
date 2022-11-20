@@ -64,8 +64,8 @@ expression:
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
 | e1=expression op=invop e2=expression { Bop(op, e2, e1) }
-| LET ident=IDENT EQUAL e1=expression IN e2=expression { Let(ident, e1, e2) }
-| IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
+| LET id=IDENT EQUAL e1=expression IN e2=expression { Let(id, e1, e2) }
+// | IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
 ;
 

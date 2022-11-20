@@ -25,13 +25,18 @@ let type_prog prog =
     | Int _  -> TInt
     | Bool _ -> TBool
     | Bop((Add | Mul | Sub | Div), e1, e2) -> 
-       check e1 TInt tenv; check e2 TInt tenv; TInt
+      check e1 TInt tenv; check e2 TInt tenv; TInt      
     | Bop((And | Or), e1, e2) -> 
         check e1 TBool tenv; check e2 TBool tenv; TBool
     | Bop((Lt | Le | Eq | Neq), e1, e2) -> 
           check e1 TInt tenv; check e2 TInt tenv; TBool
+    | Bop((Eq | Neq), e1, e2) -> 
+          check e2 (type_expr e1 tenv) tenv; TBool
     | Uop((Not), e) -> 
           check e TBool tenv; TBool
+    | If(e0, e1, e2) -> 
+          check e0 TBool tenv; check e2 (type_expr e1 tenv) tenv; (type_expr e1 tenv) 
+  
   in
 
   type_expr prog.code SymTbl.empty

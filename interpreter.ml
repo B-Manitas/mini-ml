@@ -40,6 +40,7 @@ let eval_prog (p: prog): value =
     match e with
     | Int n  -> VInt n
     | Bool b -> VBool b
+    | Unit -> VUnit
     | Bop(Sub, e1, e2) -> VInt (evali e1 env - evali e2 env)
     | Bop(Add, e1, e2) -> VInt (evali e1 env + evali e2 env)
     | Bop(Mul, e1, e2) -> VInt (evali e1 env * evali e2 env)
@@ -51,6 +52,7 @@ let eval_prog (p: prog): value =
     | Bop(Eq, e1, e2) -> VBool (evali e1 env == evali e2 env)
     | Bop(Neq, e1, e2) -> VBool (evali e1 env != evali e2 env)
     | Uop(Not, e) -> VBool (not (evalb e env))
+    | If(e0, e1, e2) -> if evalb e0 env then evalv e1 env else evalv e2 env
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 
@@ -60,9 +62,17 @@ let eval_prog (p: prog): value =
     
   (* Évaluation d'une expression dont la valeur est supposée booléenne *)
   and evalb (e: expr) (env: value Env.t): bool = 
+  match eval e env with
+  | VBool b -> b
+  | _ -> assert false
+  
+  (* Évaluation d'une expression dont la valeur est supposée booléenne ou entière *)
+  and evalv (e: expr) (env: value Env.t) =
     match eval e env with
-    | VBool b -> b
+    | VBool b -> VBool b
+    | VInt n -> VInt n
     | _ -> assert false
-  in
+
+in
 
   eval p.code Env.empty
