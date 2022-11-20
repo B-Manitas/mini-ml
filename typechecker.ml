@@ -28,11 +28,10 @@ let type_prog prog =
        check e1 TInt tenv; check e2 TInt tenv; TInt
     | Bop((And | Or), e1, e2) -> 
         check e1 TBool tenv; check e2 TBool tenv; TBool
-    | Bop((Lt | Le), e1, e2) -> 
+    | Bop((Lt | Le | Eq | Neq), e1, e2) -> 
           check e1 TInt tenv; check e2 TInt tenv; TBool
     | Uop((Not), e) -> 
           check e TBool tenv; TBool
-   
   in
 
   type_expr prog.code SymTbl.empty
