@@ -41,17 +41,19 @@ let eval_prog (p: prog): value =
     | Int n  -> VInt n
     | Bool b -> VBool b
     | Unit -> VUnit
+    | Uop(Neg, e) -> VInt (-(evali e env))
+    | Uop(Not, e) -> VBool (not (evalb e env))
     | Bop(Sub, e1, e2) -> VInt (evali e1 env - evali e2 env)
     | Bop(Add, e1, e2) -> VInt (evali e1 env + evali e2 env)
     | Bop(Mul, e1, e2) -> VInt (evali e1 env * evali e2 env)
     | Bop(Div, e1, e2) -> VInt (evali e1 env / evali e2 env)
+    | Bop(Mod, e1, e2) -> VInt (evali e1 env mod evali e2 env)
     | Bop(And, e1, e2) -> VBool (evalb e1 env && evalb e2 env)
     | Bop(Or, e1, e2) -> VBool (evalb e1 env || evalb e2 env)
     | Bop(Lt, e1, e2) -> VBool (evali e1 env < evali e2 env)
     | Bop(Le, e1, e2) -> VBool (evali e1 env <= evali e2 env)
     | Bop(Eq, e1, e2) -> VBool (evali e1 env == evali e2 env)
     | Bop(Neq, e1, e2) -> VBool (evali e1 env != evali e2 env)
-    | Uop(Not, e) -> VBool (not (evalb e env))
     | If(e0, e1, e2) -> if evalb e0 env then evalv e1 env else evalv e2 env
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)

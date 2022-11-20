@@ -18,10 +18,10 @@
         "true", TRUE;
         "false", FALSE;
         "not", NOT;
+        "mod", MOD;
         (* "bool", BOOLEAN; *)
         (* "fun", FUN; *)
         (* "rec", REC; *)
-        (* "mod", MOD; *)
         (* "type", TYPE; *)
         (* "int", INTEGER; *)
         (* "unit", UNIT; *)

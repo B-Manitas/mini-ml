@@ -24,7 +24,11 @@ let type_prog prog =
   and type_expr e tenv = match e with
     | Int _  -> TInt
     | Bool _ -> TBool
-    | Bop((Add | Mul | Sub | Div), e1, e2) -> 
+    | Uop(Neg, e) -> 
+      check e TInt tenv; TInt
+    | Uop(Not, e) -> 
+      check e TBool tenv; TBool
+    | Bop((Add | Mul | Sub | Div | Mod), e1, e2) -> 
       check e1 TInt tenv; check e2 TInt tenv; TInt      
     | Bop((And | Or), e1, e2) -> 
         check e1 TBool tenv; check e2 TBool tenv; TBool
@@ -32,8 +36,6 @@ let type_prog prog =
           check e1 TInt tenv; check e2 TInt tenv; TBool
     | Bop((Eq | Neq), e1, e2) -> 
           check e2 (type_expr e1 tenv) tenv; TBool
-    | Uop((Not), e) -> 
-          check e TBool tenv; TBool
     | If(e0, e1, e2) -> 
           check e0 TBool tenv; check e2 (type_expr e1 tenv) tenv; (type_expr e1 tenv) 
   

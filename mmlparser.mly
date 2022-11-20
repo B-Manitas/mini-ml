@@ -16,7 +16,7 @@
 %token <string> IDENT
 
 (* Symboles arithmétiques *)
-%token PLUS MINUS STAR DIV PAR_L PAR_R
+%token PLUS MINUS STAR DIV PAR_L PAR_R MOD
 
 (* Symboles variables *)
 %token LET IN EQUAL
@@ -33,7 +33,7 @@
 (* Sens de l'association *)
 %left EQUAL (* Faible prioritée *)
 %left PLUS MINUS
-%left STAR DIV
+%left STAR DIV MOD
 %left PAR_L PAR_R CST INDENT (* Forte prioritée *)
 
 
@@ -80,6 +80,7 @@ expression:
 | OR { Or }
 | LT { Lt }
 | LE { Le }
+| MOD { Mod }
 ;
 
 %inline invop:
