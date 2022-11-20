@@ -55,6 +55,12 @@ let eval_prog (p: prog): value =
     | Bop(Eq, e1, e2) -> VBool (evali e1 env == evali e2 env)
     | Bop(Neq, e1, e2) -> VBool (evali e1 env != evali e2 env)
     | If(e0, e1, e2) -> if evalb e0 env then evalv e1 env else evalv e2 env
+    | Let(id, e1, e2) -> 
+      Hashtbl.add mem 
+                  (new_ptr()) 
+                  (VClos(id, e1, env)); 
+      evalv e2 env
+      
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 
@@ -73,6 +79,7 @@ let eval_prog (p: prog): value =
     match eval e env with
     | VBool b -> VBool b
     | VInt n -> VInt n
+    | VUnit -> VUnit
     | _ -> assert false
 
 in
