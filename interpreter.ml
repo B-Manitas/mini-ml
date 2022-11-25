@@ -25,7 +25,7 @@ let print_value = function
 (* Interprétation d'un programme complet *)
 let eval_prog (p: prog): value =
   
-  (* Initialisation de la mémoire globale *)
+  (* Initialisation de la mémoire globale qui stocke les heap_value *)
   let (mem: (value, heap_value) Hashtbl.t) = Hashtbl.create 16 in
 
   (* Création de nouvelles adresses *)
@@ -38,7 +38,7 @@ let eval_prog (p: prog): value =
      et de la mémoire globale *)
   let rec eval (e: expr) (env: value Env.t): value = 
     match e with
-    | Int n  -> VInt n
+    | Int n  ->  VInt n
     | Bool b -> VBool b
     | Unit -> VUnit
     | Uop(Neg, e) -> VInt (-(evali e env))
@@ -57,15 +57,14 @@ let eval_prog (p: prog): value =
     | If(e0, e1, e2) -> if evalb e0 env then evalv e1 env else evalv e2 env
     | Let(id, e1, e2) -> 
         let ptr = VPtr(new_ptr()) in
-        let env2 = Env.add id ptr env in
-        let data = VClos(id, e1, env2) in
+        let env_extended = Env.add id ptr env in
+        let data = VClos(id, e1, env) in
         let _ = Hashtbl.add mem ptr data in
-        evalv e2 env2
+        evalv e2 env_extended
     | Var(x) -> 
-        (* let _ = Printf.printf "OK" in *)
         let ptr = Env.find x env in
-        let VClos(id, e, env) = Hashtbl.find mem ptr in
-        (evalv e env)
+        let VClos(_, e, env) = Hashtbl.find mem ptr in
+        evalv e env
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 

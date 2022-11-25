@@ -40,10 +40,10 @@ let type_prog prog =
     | If(e0, e1, e2) -> 
       check e0 TBool tenv; check e2 (type_expr e1 tenv) tenv; (type_expr e1 tenv) 
     | Let(id, e0, e1) -> 
-      (* let tenv2 = SymTbl.add id (type_expr e0 tenv) tenv in *)
-      (* (type_expr e1 tenv) *)
-      TInt
-    | Var(x) -> TInt
+      let type_e1 = type_expr e0 tenv in
+      let tenv = SymTbl.add id type_e1 tenv in
+      type_expr e1 tenv
+    | Var(x) -> SymTbl.find x tenv
 
   in
 

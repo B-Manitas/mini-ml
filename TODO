@@ -7,8 +7,8 @@ Arithmétique (Opérateurs: plus, moins, div, mul)
 Variables
 ✔ Lexer @done(22-11-19 16:38)
 ✔ Parser @done(22-11-19 16:38)
-☐ Type Checker
-☐ Intrepreteur
+✔ Type Checker @done(22-11-25 22:24)
+✔ Intrepreteur @done(22-11-25 22:24)
 
 Fonctions
 ☐ Lexer
