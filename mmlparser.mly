@@ -22,7 +22,10 @@
 %token LET IN EQUAL
 
 (* Symboles fonctions *)
-%token IF THEN ELSE 
+%token IF THEN ELSE
+
+(* Symbol global *)
+%token SEMICOLON
 
 (* Operation booléennes *)
 %token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR NOT
@@ -31,7 +34,8 @@
 %token EOF
 
 (* Sens de l'association *)
-%left EQUAL (* Faible prioritée *)
+%left SEMICOLON (* Faible prioritée *)
+%left EQUAL
 %left PLUS MINUS
 %left STAR DIV MOD
 %left PAR_L PAR_R CST INDENT (* Forte prioritée *)
@@ -61,6 +65,7 @@ simple_expression:
 
 expression:
 | e=simple_expression { e }
+| e1=expression SEMICOLON e2=expression { App(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
 | e1=expression op=invop e2=expression { Bop(op, e2, e1) }

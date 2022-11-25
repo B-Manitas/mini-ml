@@ -79,12 +79,12 @@ rule token = parse
       { PAR_L }
   | ")" 
       { PAR_R }
+  | ";" 
+      { SEMICOLON }
   (* | "{" 
       { BRACKET_L }
   | "}" 
       { BRACKET_R }
-  | ";" 
-      { SEMICOLON }
   | ":" 
       { COLON }
   | "." 

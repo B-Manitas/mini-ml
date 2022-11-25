@@ -65,6 +65,8 @@ let eval_prog (p: prog): value =
         let ptr = Env.find x env in
         let VClos(_, e, env) = Hashtbl.find mem ptr in
         evalv e env
+    | App(e1, e2) -> (evalv e1 env); (evalv e2 env)
+  
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 
