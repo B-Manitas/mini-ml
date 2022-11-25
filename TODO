@@ -30,6 +30,6 @@ Récursion
 
 A Verifier
 ☐ Controller division par zéro
-☐ mmlcat renvoie une erreur pour div
+✘ mmlcat renvoie une erreur pour operations arith @cancelled(22-11-25 20:49)
 ☐ Les prioritées des opérateurs dans PARSER
 ☐ Type de: if e0 then e1 ?

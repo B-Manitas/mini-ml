@@ -1,1 +1,2 @@
-if 1 < 2 then true
+if 1 == 2 then 3
+else 11
