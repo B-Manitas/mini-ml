@@ -15,6 +15,9 @@
 (* Symbole des noms des variables *)
 %token <string> IDENT
 
+(* Symbole des types *)
+%token TBOOL
+
 (* Symboles arithmétiques *)
 %token PLUS MINUS STAR DIV PAR_L PAR_R MOD
 
@@ -22,10 +25,10 @@
 %token LET IN EQUAL
 
 (* Symboles fonctions *)
-%token IF THEN ELSE
+%token IF THEN ELSE FUN
 
 (* Symbol global *)
-%token SEMICOLON
+%token SEMICOLON ARROW_R COLON
 
 (* Operation booléennes *)
 %token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR NOT
@@ -65,13 +68,16 @@ simple_expression:
 
 expression:
 | e=simple_expression { e }
-| e1=expression SEMICOLON e2=expression { App(e1, e2) }
+| f=expression e=expression { App(f, e)}
+| e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
 | e1=expression op=invop e2=expression { Bop(op, e2, e1) }
 | LET id=IDENT EQUAL e1=expression IN e2=expression { Let(id, e1, e2) }
 | IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
+| FUN x=IDENT ARROW_R e=expression { Fun(x, TInt, e) }
+// | LET f=IDENT args=list(PAR_L id=IDENT COLON typ=expression PAR_R { App(id, TUnit) }) EQUAL e1=expression IN e2=expression { Let(f, e1, e2) }
 ;
 
 %inline binop:

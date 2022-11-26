@@ -2,7 +2,7 @@
 
 open Mml
 
-(* Environnement : associe des valeurs à des noms de variables *)
+(* Environnement : associe les pointeurs aux noms des variables *)
 module Env = Map.Make(String)
 
 (* Valeurs *)
@@ -65,8 +65,31 @@ let eval_prog (p: prog): value =
         let ptr = Env.find x env in
         let VClos(_, e, env) = Hashtbl.find mem ptr in
         evalv e env
-    | App(e1, e2) -> (evalv e1 env); (evalv e2 env)
-  
+    | Seq(e1, e2) -> (evalv e1 env); (evalv e2 env)
+    | Fun(x, _, e) -> 
+      let ptr = VPtr(new_ptr()) in
+      let env_extended = Env.add x ptr env in
+      let data = VClos(x, e, env_extended) in 
+      let _ = Hashtbl.add mem ptr data in
+      ptr
+    | App(f, e) -> 
+      (* On récupère le pointeur de la fonction f *)
+      let ptrf = evalv f env in
+      
+      (* On récupère la cloture fonctionnelle de f *)
+      let VClos(funx, expfun, envfun) = Hashtbl.find mem ptrf in
+      
+      (* 
+        On crée un environnement où le paramètre x de f est associée à la valeur de e.
+        x = eval(e)
+      *)
+      let ptrx = VPtr(new_ptr()) in
+      let envx = Env.add funx ptrx env in
+      let datax = VClos(funx, e, env) in
+      let _ = Hashtbl.add mem ptrx datax in
+      
+      (* On évalue l'expression de f dans l'environnement de x *)
+      evalv expfun envx
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 
@@ -80,14 +103,15 @@ let eval_prog (p: prog): value =
   | VBool b -> b
   | _ -> assert false
   
-  (* Évaluation d'une expression dont la valeur est supposée booléenne ou entière *)
+  (* Évaluation d'une expression dont la valeur est supposée de type value *)
   and evalv (e: expr) (env: value Env.t) =
     match eval e env with
     | VBool b -> VBool b
     | VInt n -> VInt n
     | VUnit -> VUnit
+    | VPtr p -> VPtr p
     | _ -> assert false
-
+    
 in
 
   eval p.code Env.empty

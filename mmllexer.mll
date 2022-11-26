@@ -19,8 +19,8 @@
         "false", FALSE;
         "not", NOT;
         "mod", MOD;
-        (* "bool", BOOLEAN; *)
-        (* "fun", FUN; *)
+        "fun", FUN;
+        "bool", TBOOL;
         (* "rec", REC; *)
         (* "type", TYPE; *)
         (* "int", INTEGER; *)
@@ -81,18 +81,18 @@ rule token = parse
       { PAR_R }
   | ";" 
       { SEMICOLON }
+  | "->" 
+      { ARROW_R } 
+  | ":" 
+      { COLON }
   (* | "{" 
       { BRACKET_L }
   | "}" 
       { BRACKET_R }
-  | ":" 
-      { COLON }
   | "." 
       { POINT }
   | "<-" 
-      { ARROW_L }
-  | "->" 
-      { ARROW_R } *)
+      { ARROW_L }*)
   | eof
       { EOF }
   | _
