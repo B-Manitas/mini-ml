@@ -21,10 +21,10 @@
         "mod", MOD;
         "fun", FUN;
         "bool", TBOOL;
+        "int", TINT;
+        "unit", TUNIT;
         (* "rec", REC; *)
         (* "type", TYPE; *)
-        (* "int", INTEGER; *)
-        (* "unit", UNIT; *)
         (* "mutable", MUTABLE;   *)
       ] ;
     fun s ->

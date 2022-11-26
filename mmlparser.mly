@@ -16,7 +16,7 @@
 %token <string> IDENT
 
 (* Symbole des types *)
-%token TBOOL
+%token TINT TBOOL TUNIT
 
 (* Symboles arithmétiques *)
 %token PLUS MINUS STAR DIV PAR_L PAR_R MOD
@@ -76,7 +76,7 @@ expression:
 | LET id=IDENT EQUAL e1=expression IN e2=expression { Let(id, e1, e2) }
 | IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
-| FUN x=IDENT ARROW_R e=expression { Fun(x, TInt, e) }
+| FUN PAR_L x=IDENT COLON typ=typ PAR_R ARROW_R e=expression { Fun(x, typ, e) }
 // | LET f=IDENT args=list(PAR_L id=IDENT COLON typ=expression PAR_R { App(id, TUnit) }) EQUAL e1=expression IN e2=expression { Let(f, e1, e2) }
 ;
 
@@ -102,4 +102,10 @@ expression:
 %inline unop:
 | MINUS { Neg }
 | NOT { Not }
+;
+
+%inline typ:
+| TBOOL { TBool }
+| TINT { TInt }
+| TUNIT { TUnit }
 ;

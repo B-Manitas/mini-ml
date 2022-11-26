@@ -1,1 +1,1 @@
-let f = fun x -> x + x in f (20 + 1)
+let f = fun (x : bool) -> x || not x in f (true)
