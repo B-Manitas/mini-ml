@@ -61,15 +61,14 @@ simple_expression:
 | PAR_L PAR_R { Unit }
 | n=CST { Int(n) }
 | x=IDENT { Var(x) }
-| PAR_L e=expression PAR_R { e }
 | b=TRUE { Bool(true) }
 | b=FALSE { Bool(false) }
 ;
 
 expression:
 | e=simple_expression { e }
-| f=simple_expression e1=simple_expression e2=simple_expression { App(App(f, e1), e2) }
-| f=simple_expression e=simple_expression { App(f, e) }
+| PAR_L e=expression PAR_R { e }
+| f=expression e=simple_expression { App(f, e) }
 | e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }

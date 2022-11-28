@@ -1,2 +1,2 @@
-let f (x: int) (y: int) = x + y in
-(f 4 3) + (f 2 3)
+let f (x: int) (y: int) (z: int) = x + y + z in
+f 4
