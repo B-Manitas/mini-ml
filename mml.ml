@@ -51,3 +51,9 @@ let rec mk_fun xs e = match xs with
 let rec mk_fun_type xs t = match xs with
   | [] -> t
   | (_, t')::xs -> TFun(t', mk_fun_type xs t)
+
+let rec mk_app args exp_end = 
+  let rev_args = List.rev args in
+  match rev_args with
+  | [] -> exp_end
+  | hd::tl -> App(mk_app tl exp_end, exp_end)

@@ -1,1 +1,2 @@
-let f = fun (x : bool) -> x || not x in f (true)
+let f (x: int) (y: int) = x + y in
+(f 4 3) + (f 2 3)

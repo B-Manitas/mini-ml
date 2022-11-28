@@ -78,14 +78,14 @@ let eval_prog (p: prog): value =
       
       (* On récupère la cloture fonctionnelle de f *)
       let VClos(funx, expfun, envfun) = Hashtbl.find mem ptrf in
-      
+            
       (* 
-        On crée un environnement où le paramètre x de f est associée à la valeur de e.
-        x = eval(e)
+        On étend l'environnement où le paramètre x de f est associée à la valeur de e.
+        x -> eval(e)
       *)
       let ptrx = VPtr(new_ptr()) in
-      let envx = Env.add funx ptrx env in
-      let datax = VClos(funx, e, env) in
+      let envx = Env.add funx ptrx envfun in
+      let datax = VClos(funx, e, envfun) in
       let _ = Hashtbl.add mem ptrx datax in
       
       (* On évalue l'expression de f dans l'environnement de x *)

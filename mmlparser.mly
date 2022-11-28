@@ -68,7 +68,8 @@ simple_expression:
 
 expression:
 | e=simple_expression { e }
-| f=expression e=expression { App(f, e)}
+| f=expression e1=expression e2=expression { App(App(f, e1), e2) }
+| f=expression e=expression { App(f, e) }
 | e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
@@ -77,7 +78,7 @@ expression:
 | IF e1=expression THEN e2=expression { If(e1, e2, Unit) }
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
 | FUN PAR_L x=IDENT COLON typ=typ PAR_R ARROW_R e=expression { Fun(x, typ, e) }
-// | LET f=IDENT args=list(PAR_L id=IDENT COLON typ=expression PAR_R { App(id, TUnit) }) EQUAL e1=expression IN e2=expression { Let(f, e1, e2) }
+| LET f=IDENT args=list(PAR_L x=IDENT COLON typ=typ PAR_R { (x, typ) }) EQUAL e1=expression IN e2=expression { Let(f, mk_fun args e1, e2) }
 ;
 
 %inline binop:
