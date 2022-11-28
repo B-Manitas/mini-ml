@@ -1,2 +1,3 @@
-let f (x: int) = x in
-f 2
+let f (x: int) (y: int) = x + y in
+let g = f 3 in
+g 2 + g 1

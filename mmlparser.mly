@@ -68,8 +68,8 @@ simple_expression:
 
 expression:
 | e=simple_expression { e }
-| f=expression e1=expression e2=expression { App(App(f, e1), e2) }
-| f=expression e=expression { App(f, e) }
+| f=simple_expression e1=simple_expression e2=simple_expression { App(App(f, e1), e2) }
+| f=simple_expression e=simple_expression { App(f, e) }
 | e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
 | e1=expression op=binop e2=expression { Bop(op, e1, e2) }
