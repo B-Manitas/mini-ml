@@ -25,7 +25,7 @@
 %token LET IN EQUAL
 
 (* Symboles fonctions *)
-%token IF THEN ELSE FUN
+%token IF THEN ELSE FUN REC
 
 (* Symbol global *)
 %token SEMICOLON ARROW_R COLON
@@ -58,16 +58,16 @@ program:
 ;
 
 simple_expression:
-| PAR_L PAR_R { Unit }
 | n=CST { Int(n) }
-| x=IDENT { Var(x) }
 | b=TRUE { Bool(true) }
 | b=FALSE { Bool(false) }
+| PAR_L PAR_R { Unit }
+| x=IDENT { Var(x) }
+| PAR_L e=expression PAR_R { e }
 ;
 
 expression:
 | e=simple_expression { e }
-| PAR_L e=expression PAR_R { e }
 | f=expression e=simple_expression { App(f, e) }
 | e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
@@ -78,6 +78,8 @@ expression:
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
 | FUN PAR_L x=IDENT COLON typ=typ PAR_R ARROW_R e=expression { Fun(x, typ, e) }
 | LET f=IDENT args=list(PAR_L x=IDENT COLON typ=typ PAR_R { (x, typ) }) EQUAL e1=expression IN e2=expression { Let(f, mk_fun args e1, e2) }
+| LET REC f=IDENT args=list(PAR_L x=IDENT COLON t=typ PAR_R { (x, t) }) COLON typf=typ EQUAL e1=expression IN e2=expression 
+{ Let(f, Fix(f, mk_fun_type args typf, mk_fun args e1), e2) }
 ;
 
 %inline binop:

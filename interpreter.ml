@@ -89,7 +89,7 @@ let eval_prog (p: prog): value =
       let _ = Hashtbl.add mem ptrx datax in
       
       (* On évalue l'expression de f dans l'environnement de x *)
-      evalv expfun envx
+      evalv expfun envx      
 
   (* Évaluation d'une expression dont la valeur est supposée entière *)
   and evali (e: expr) (env: value Env.t): int = 

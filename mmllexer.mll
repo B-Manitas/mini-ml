@@ -23,7 +23,7 @@
         "bool", TBOOL;
         "int", TINT;
         "unit", TUNIT;
-        (* "rec", REC; *)
+        "rec", REC;
         (* "type", TYPE; *)
         (* "mutable", MUTABLE;   *)
       ] ;
