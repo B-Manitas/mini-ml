@@ -24,7 +24,7 @@
         "int", TINT;
         "unit", TUNIT;
         "rec", REC;
-        (* "type", TYPE; *)
+        "type", TYPE;
         (* "mutable", MUTABLE;   *)
       ] ;
     fun s ->
@@ -85,10 +85,11 @@ rule token = parse
       { ARROW_R } 
   | ":" 
       { COLON }
-  (* | "{" 
-      { BRACKET_L }
   | "}" 
       { BRACKET_R }
+  | "{" 
+      { BRACKET_L }
+  (* 
   | "." 
       { POINT }
   | "<-" 

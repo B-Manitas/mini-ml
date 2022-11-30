@@ -27,8 +27,11 @@
 (* Symboles fonctions *)
 %token IF THEN ELSE FUN REC
 
-(* Symbol global *)
+(* Symbole global *)
 %token SEMICOLON ARROW_R COLON
+
+(* Symbole Structure *)
+%token BRACKET_L BRACKET_R TYPE
 
 (* Operation booléennes *)
 %token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR NOT
@@ -51,9 +54,10 @@
 %%
 
 program:
-| code=expression EOF 
+| types=list(TYPE s=IDENT EQUAL BRACKET_L args=list(x=IDENT COLON t=typ SEMICOLON {(x, t, true)}) BRACKET_R {(s, args)}) 
+  code=expression EOF 
   { 
-    { types=[]; code } 
+    { types; code } 
   }
 ;
 
