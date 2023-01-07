@@ -23,9 +23,15 @@
         "bool", TBOOL;
         "int", TINT;
         "unit", TUNIT;
-        "rec", REC;
-        "type", TYPE;
-        (* "mutable", MUTABLE;   *)
+
+        (* pour les types et types structure *)
+        "type", TYPE; 
+        "mutable", MUTABLE; 
+
+        (* pour les types énumérés *)
+        "of", OF
+        (* + les types pour le forçage de type déjà définis ci-dessus *)
+
       ] ;
     fun s ->
       try  Hashtbl.find h s
@@ -85,15 +91,16 @@ rule token = parse
       { ARROW_R } 
   | ":" 
       { COLON }
-  | "}" 
-      { BRACKET_R }
   | "{" 
       { BRACKET_L }
-  (* 
+  | "}" 
+      { BRACKET_R }
   | "." 
       { POINT }
   | "<-" 
-      { ARROW_L }*)
+      { ARROW_L }
+  | "|" 
+      { BAR }
   | eof
       { EOF }
   | _

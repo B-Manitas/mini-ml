@@ -2,7 +2,7 @@
 
   open Lexing
   open Mml
-
+  
 %}
 
 
@@ -15,6 +15,7 @@
 (* Symbole des noms des variables *)
 %token <string> IDENT
 
+
 (* Symbole des types *)
 %token TINT TBOOL TUNIT
 
@@ -25,16 +26,20 @@
 %token LET IN EQUAL
 
 (* Symboles fonctions *)
-%token IF THEN ELSE FUN REC
+%token IF THEN ELSE FUN
 
-(* Symbole global *)
+(* Symbol global *)
 %token SEMICOLON ARROW_R COLON
-
-(* Symbole Structure *)
-%token BRACKET_L BRACKET_R TYPE
 
 (* Operation booléennes *)
 %token TRUE FALSE NEQ DEQUAL LT GT LE GE AND OR NOT
+
+(*pour les types et structures*)
+%token BRACKET_L BRACKET_R TYPE MUTABLE ARROW_L POINT
+
+(* pour les types enumeres *)
+%token BAR OF
+%token <string> CONSTRUCT 
 
 (* Fin de fichier *)
 %token EOF
@@ -53,25 +58,42 @@
 
 %%
 
+
+
 program:
-| types=list(TYPE s=IDENT EQUAL BRACKET_L args=list(x=IDENT COLON t=typ SEMICOLON {(x, t, true)}) BRACKET_R {(s, args)}) 
-  code=expression EOF 
+|(*s=types_structETenum *) (*on va separer les deux dans le typechecker là où on en a besoin *)
+ (*enums=types_enumeres*)
+ s=structure
+ code=expression EOF 
   { 
-    { types; code } 
+    { types=[s]; code } 
   }
 ;
 
+(*types_structETenum:*)
+structure:
+|TYPE s=IDENT EQUAL BRACKET_L l=list(m=option(MUTABLE) x=IDENT COLON t=typ SEMICOLON {(x, t, if m = None then false else true)}) BRACKET_R {(s,l)}
+|{("",[])}
+(*types_enumeres:
+|TYPE e=IDENT EQUAL l=list(x=CONSTRUCT BAR {x}) last= CONSTRUCT {(e,last::l)} (* on suppose que l'ordre n'a pas d'importance pour cette liste *)
+|TYPE e=IDENT EQUAL x= CONSTRUCT {(e, [x])} (*  type unique dans ce cas *)*)
+
+;
+
 simple_expression:
+| PAR_L PAR_R { Unit }
 | n=CST { Int(n) }
+| x=IDENT { Var(x) }
 | b=TRUE { Bool(true) }
 | b=FALSE { Bool(false) }
-| PAR_L PAR_R { Unit }
-| x=IDENT { Var(x) }
-| PAR_L e=expression PAR_R { e }
+| e=simple_expression POINT x=IDENT {GetF(e, x)}
+| BRACKET_L l=list(x=IDENT EQUAL e=expression SEMICOLON { (x, e) }) BRACKET_R {Strct(l)}
+(*| x=CONSTRUCT { Enum(x) }*)
 ;
 
 expression:
 | e=simple_expression { e }
+| PAR_L e=expression PAR_R { e }
 | f=expression e=simple_expression { App(f, e) }
 | e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 | op=unop e=expression { Uop(op, e) }
@@ -82,8 +104,8 @@ expression:
 | IF e1=expression THEN e2=expression ELSE e3=expression { If(e1, e2, e3) }
 | FUN PAR_L x=IDENT COLON typ=typ PAR_R ARROW_R e=expression { Fun(x, typ, e) }
 | LET f=IDENT args=list(PAR_L x=IDENT COLON typ=typ PAR_R { (x, typ) }) EQUAL e1=expression IN e2=expression { Let(f, mk_fun args e1, e2) }
-| LET REC f=IDENT args=list(PAR_L x=IDENT COLON t=typ PAR_R { (x, t) }) COLON typf=typ EQUAL e1=expression IN e2=expression 
-{ Let(f, Fix(f, mk_fun_type args typf, mk_fun args e1), e2) }
+| e1=simple_expression POINT x = IDENT ARROW_L e2 = expression { SetF(e1, x, e2)} 
+| e1=expression SEMICOLON e2=expression { Seq(e1, e2) }
 ;
 
 %inline binop:
@@ -115,3 +137,7 @@ expression:
 | TINT { TInt }
 | TUNIT { TUnit }
 ;
+
+(*%inline t:
+|  { strct  }
+| { enum }*)
