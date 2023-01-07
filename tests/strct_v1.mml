@@ -1,0 +1,4 @@
+type t = { a: int; b: bool; }
+
+let f (list: t) = 
+let mylist = { a: 2, b: 2 } in mylist
